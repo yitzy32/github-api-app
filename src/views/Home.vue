@@ -8,13 +8,18 @@
 </style>
 
 <script>
+import axios from "axios";
 export default {
   data: function() {
     return {
-      message: "Welcome to Vue.js!"
+      message: "Welcome to Vue.js!",
     };
   },
-  created: function() {},
+  created: function() {
+    axios.get("https://api.github.com/users/yitzy32/repos").then((response) => {
+      console.log(response.data)
+    });
+  },
   methods: {}
 };
 </script>

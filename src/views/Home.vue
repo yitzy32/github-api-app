@@ -15,11 +15,29 @@ export default {
       message: "Welcome to Vue.js!",
     };
   },
+
   created: function() {
-    axios.get("https://api.github.com/users/yitzy32/repos").then((response) => {
-      console.log(response.data)
-    });
+    this.findLastPushed()
   },
-  methods: {}
+
+  methods: {
+    findLastPushed: async function() {
+      const url = "https://api.github.com/users/yitzy32/repos?per_page=100";
+
+      await axios.get(url)
+      .then((response) => {
+        let lastPushedMs = new Date(response.data[0].pushed_at).getTime(),
+            repoName = "";
+        for (const repo of response.data) {
+          let pushedAtMs = new Date(repo.pushed_at).getTime();
+          if (pushedAtMs > lastPushedMs) {
+            lastPushedMs = pushedAtMs;
+            repoName = repo.name;
+          }
+        }
+          console.log("The last pushed:", "Repo Name: ", repoName, "lastPushedMs:",lastPushedMs)
+      });
+    }
+  }
 };
 </script>

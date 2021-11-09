@@ -26,10 +26,10 @@ export default {
 
       await axios.get(url)
       .then((response) => {
-        let lastPushedMs = new Date(response.data[0].pushed_at).getTime(),
+        let lastPushedMs = this.convertToMs(response.data[0].pushed_at),
             repoName = "";
         for (const repo of response.data) {
-          let pushedAtMs = new Date(repo.pushed_at).getTime();
+          let pushedAtMs = this.convertToMs(repo.pushed_at);
           if (pushedAtMs > lastPushedMs) {
             lastPushedMs = pushedAtMs;
             repoName = repo.name;
@@ -37,6 +37,10 @@ export default {
         }
           console.log("The last pushed:", "Repo Name: ", repoName, "lastPushedMs:",lastPushedMs)
       });
+    },
+
+    convertToMs: function(date) {
+      return new Date(date).getTime()
     }
   }
 };

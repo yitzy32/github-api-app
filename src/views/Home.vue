@@ -27,16 +27,18 @@ export default {
       await axios.get(url)
       .then((response) => {
         let lastPushedMs = this.convertToMs(response.data[0].pushed_at),
-            repoName = "";
+            repoName = "",
+            owner = "";
         for (const repo of response.data) {
           let pushedAtMs = this.convertToMs(repo.pushed_at);
           if (pushedAtMs > lastPushedMs) {
             lastPushedMs = pushedAtMs;
             repoName = repo.name;
+            owner = repo.owner.login;
           }
         }
         let lastPushed = this.convertToLegibleDate(lastPushedMs)
-          console.log("The last pushed:", "Repo Name: ", repoName, "lastPushedMs:",lastPushed)
+          console.log("The last pushed:", "Repo Name: ", repoName, "lastPushed:",lastPushed, "Owner:", owner)
       });
     },
 

@@ -35,12 +35,16 @@ export default {
             repoName = repo.name;
           }
         }
-          console.log("The last pushed:", "Repo Name: ", repoName, "lastPushedMs:",lastPushedMs)
+        let lastPushed = this.convertToLegibleDate(lastPushedMs)
+          console.log("The last pushed:", "Repo Name: ", repoName, "lastPushedMs:",lastPushed)
       });
     },
 
     convertToMs: function(date) {
       return new Date(date).getTime()
+    },
+    convertToLegibleDate: function(date) {
+      return new Date(date).toString()
     }
   }
 };

@@ -23,10 +23,16 @@ export default {
   methods: {
     findLastPushed: async function() {
       const url = "https://api.github.com/users/yitzy32/repos?per_page=100";
+      const headers = {
+        "Authorization": `Token ${process.env.VUE_APP_PERSONAL_ACCESS_TOKEN}`
+      }
       let repoName = "",
           owner = "";
 
-      await axios.get(url)
+      await axios.get(url, {
+        "method": "GET",
+        "headers": headers 
+      })
       .then((response) => {
         let lastPushedMs = this.convertToMs(response.data[0].pushed_at);
         for (const repo of response.data) {
@@ -44,7 +50,21 @@ export default {
         console.log(Object.keys(response.data))
       })
     },
-
+    // findLanguages: function (repoName) {
+    //   language_tracker = {}
+    //   axios.get(`https://api.github.com/repos/yitzy32/${repoName}/languages`).then((response) => {
+    //     let object = response.data;
+    //     for (const lang in object) {
+    //       if (language_tracker[lang]) {
+    //         language_tracker[lang] += 1
+    //       } else {
+    //         language_tracker[lang] = 1
+    //       }
+    //     }
+    //     // console.log(language_tracker)
+    //     return language_tracker
+    //   })
+    // },
     convertToMs: function(date) {
       return new Date(date).getTime()
     },

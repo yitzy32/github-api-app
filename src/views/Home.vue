@@ -23,12 +23,12 @@ export default {
   methods: {
     findLastPushed: async function() {
       const url = "https://api.github.com/users/yitzy32/repos?per_page=100";
+      let repoName = "",
+          owner = "";
 
       await axios.get(url)
       .then((response) => {
-        let lastPushedMs = this.convertToMs(response.data[0].pushed_at),
-            repoName = "",
-            owner = "";
+        let lastPushedMs = this.convertToMs(response.data[0].pushed_at);
         for (const repo of response.data) {
           let pushedAtMs = this.convertToMs(repo.pushed_at);
           if (pushedAtMs > lastPushedMs) {
@@ -40,6 +40,9 @@ export default {
         let lastPushed = this.convertToLegibleDate(lastPushedMs)
           console.log("The last pushed:", "Repo Name: ", repoName, "lastPushed:",lastPushed, "Owner:", owner)
       });
+      await axios.get(`https://api.github.com/repos/yitzy32/${repoName}/languages`).then((response) => {
+        console.log(Object.keys(response.data))
+      })
     },
 
     convertToMs: function(date) {
